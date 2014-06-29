@@ -4,13 +4,12 @@ Display Navigation Tabs within Wordpress Plugin & Theme Admin Areas
 
 *Licensed under the MIT license: http://opensource.org/licenses/MIT*
 
-Overview
+:: Overview
 --------
 
 Simple function adds Navigation Tabs within Custom Admin Areas for Wordpress Plugins and Themes.
 
 ```php
-<?php
 function example_tabs() {
     if( !isset( $_GET['page'] ) ) { return; }
 
@@ -39,29 +38,26 @@ function example_tabs() {
 
     return $admin_tabs;
 }
-?>
 ```
 
-Settings:
+:: Settings
+------------
+The $default_tab is the default key to be used from the tabs array. The tabs array includes page id names and page display values for each tab.
+
+```php
 $default_tab = '';
 $tabs = array( 'key' => 'value' );
+```
 
-
-Requirements
-------------
-
-Wordpress 3.5+
-
-Usage
+:: Usage
 -----
-
 Add the example_tabs() function to your Admin Area display scripts.
 
 ```php
 echo example_tabs();
 ```
 
-Change Log
+:: Change Log
 ----------
 
 0.1.0
