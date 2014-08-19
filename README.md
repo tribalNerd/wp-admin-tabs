@@ -10,29 +10,38 @@ Display Navigation Tabs within Wordpress Plugin & Theme Admin Areas
 Simple function adds Navigation Tabs within Custom Admin Areas for Wordpress Plugins and Themes.
 
 ```php
-function example_tabs() {
+<?php
+/**
+ * Display Navigation Tabs within Wordpress Plugin & Theme Admin Areas
+ * Modify: $tabs array()
+ * Call: <?php echo tabs();?>
+ * @author Chris Winters
+ * @version 0.1.1
+ */
+function tabs() {
+    // Required
     if( !isset( $_GET['page'] ) ) { return; }
-
-    // Default Tab from array key
-    $default_tab = 'home';
 
     // Tabs Names: &tab=home
     $tabs = array( 
         'home'      => 'Home', 
         'settings'  => 'Settings', 
         'contact'   => 'Contact' 
-    );
+    );    
+
+    // Required
+    if( !empty( $tabs ) && !is_array( $tabs ) ) { return; }
 
     // Get page & current tab
     $page = sanitize_key( $_GET['page'] );
-    $current = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $default_tab;
+    $current = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : key( $tabs );
 
     // Tabs html
     $admin_tabs = '<div id="icon-edit-pages" class="icon32"><br /></div>';
     $admin_tabs .= '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ) {
             $class = ( $tab == $current ) ? ' nav-tab-active' : '';
-            $admin_tabs .= '<a href="?page='. $page .'&amp;tab='. $tab .'" class="nav-tab'. $class .'">'. $name .'</a>';
+            $admin_tabs .= '<a href="?page='. esc_attr( $page ) .'&amp;tab='. esc_attr( $tab ) .'" class="nav-tab'. esc_attr( $class ) .'">'. esc_attr__( $name ) .'</a>';
         }
     $admin_tabs .= '</h2><br />';
 
@@ -42,24 +51,32 @@ function example_tabs() {
 
 :: Settings
 ------------
-The $default_tab is the default key to be used from the tabs array. The tabs array includes page id names and page display values for each tab.
+The $tabs array includes the tab id (key) and the tabs display name (value) for each tab.
 
 ```php
-$default_tab = '';
-$tabs = array( 'key' => 'value' );
+$tabs = array(
+    'key' => 'value',
+    'lower-case-name', 'Proper Name'
+);
 ```
 
 :: Usage
 -----
-Add the example_tabs() function to your Admin Area display scripts.
+Add the tabs() function to your Admin Area display scripts.
 
 ```php
-echo example_tabs();
+echo tabs();
 ```
+
 
 :: Change Log
 ----------
 
+0.1.1
+- Set $current to use key()
+- Added $tab !empty & !is_array checks
+- Added esc_attr & esc_attr__
+
+
 0.1.0
 - Release
-
