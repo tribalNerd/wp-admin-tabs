@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Wp Admin Tabs : Wordpress Admin Tabs - Display Navigation Tabs within a Wordpress Plugin &amp; Theme Admin Areas">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Wp Admin Tabs</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/tribalNerd/wp-admin-tabs">View on GitHub</a>
+
+          <h1 id="project_title">Wp Admin Tabs</h1>
+          <h2 id="project_tagline">Wordpress Admin Tabs - Display Navigation Tabs within a Wordpress Plugin &amp; Theme Admin Areas</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/tribalNerd/wp-admin-tabs/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/tribalNerd/wp-admin-tabs/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="wordpress-admin-tabs" class="anchor" href="#wordpress-admin-tabs"><span class="octicon octicon-link"></span></a>Wordpress Admin Tabs</h1>
+
+<h2>
+<a name="display-navigation-tabs-within-wordpress-plugin--theme-admin-areas" class="anchor" href="#display-navigation-tabs-within-wordpress-plugin--theme-admin-areas"><span class="octicon octicon-link"></span></a>Display Navigation Tabs within Wordpress Plugin &amp; Theme Admin Areas</h2>
+
+<p><a href="http://opensource.org/licenses/MIT">Licensed under the MIT license</a></p>
+
+<h3>
+<a name="-download" class="anchor" href="#-download"><span class="octicon octicon-link"></span></a>:: Download</h3>
+
+<p><a href="https://github.com/tribalNerd/wp-admin-tabs/archive/master.zip">Download the zip</a> or <a href="https://github.com/tribalNerd/wp-admin-tabs/fork">source the files</a> or <a href="https://github.com/tribalNerd/wp-admin-tabs/fork">fork it</a>.</p>
+
+<h3>
+<a name="-overview" class="anchor" href="#-overview"><span class="octicon octicon-link"></span></a>:: Overview</h3>
+
+<p>Simple function adds Navigation Tabs within Custom Admin Areas for Wordpress Plugins and Themes.</p>
+
+<div class="highlight highlight-php"><pre><span class="sd">/**</span>
+<span class="sd"> * Display Navigation Tabs within Wordpress Plugin &amp; Theme Admin Areas</span>
+<span class="sd"> * Modify: $tabs array()</span>
+<span class="sd"> * Call: &lt;?php echo tabs();?&gt;</span>
+<span class="sd"> * @author Chris Winters</span>
+<span class="sd"> * @version 0.1.1</span>
+<span class="sd"> */</span>
+<span class="k">function</span> <span class="nf">tabs</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Tabs Names: &amp;tab=home</span>
+    <span class="nv">$tabs</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span> 
+        <span class="s1">'home'</span>      <span class="o">=&gt;</span> <span class="s1">'Home'</span><span class="p">,</span> 
+        <span class="s1">'settings'</span>  <span class="o">=&gt;</span> <span class="s1">'Settings'</span><span class="p">,</span> 
+        <span class="s1">'contact'</span>   <span class="o">=&gt;</span> <span class="s1">'Contact'</span> 
+    <span class="p">);</span>    
+
+    <span class="c1">// Required</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'page'</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="k">empty</span><span class="p">(</span> <span class="nv">$tabs</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nb">is_array</span><span class="p">(</span> <span class="nv">$tabs</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="c1">// Get page &amp; current tab</span>
+    <span class="nv">$page</span> <span class="o">=</span> <span class="nx">sanitize_key</span><span class="p">(</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'page'</span><span class="p">]</span> <span class="p">);</span>
+    <span class="nv">$current</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'tab'</span><span class="p">]</span> <span class="p">)</span> <span class="o">?</span> <span class="nx">sanitize_key</span><span class="p">(</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'tab'</span><span class="p">]</span> <span class="p">)</span> <span class="o">:</span> <span class="nb">key</span><span class="p">(</span> <span class="nv">$tabs</span> <span class="p">);</span>
+
+    <span class="c1">// Tabs html</span>
+    <span class="nv">$admin_tabs</span> <span class="o">=</span> <span class="s1">'&lt;div id="icon-edit-pages" class="icon32"&gt;&lt;br /&gt;&lt;/div&gt;'</span><span class="p">;</span>
+    <span class="nv">$admin_tabs</span> <span class="o">.=</span> <span class="s1">'&lt;h2 class="nav-tab-wrapper"&gt;'</span><span class="p">;</span>
+        <span class="k">foreach</span><span class="p">(</span> <span class="nv">$tabs</span> <span class="k">as</span> <span class="nv">$tab</span> <span class="o">=&gt;</span> <span class="nv">$name</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$class</span> <span class="o">=</span> <span class="p">(</span> <span class="nv">$tab</span> <span class="o">==</span> <span class="nv">$current</span> <span class="p">)</span> <span class="o">?</span> <span class="s1">' nav-tab-active'</span> <span class="o">:</span> <span class="s1">''</span><span class="p">;</span>
+            <span class="nv">$admin_tabs</span> <span class="o">.=</span> <span class="s1">'&lt;a href="?page='</span><span class="o">.</span> <span class="nx">esc_attr</span><span class="p">(</span> <span class="nv">$page</span> <span class="p">)</span> <span class="o">.</span><span class="s1">'&amp;amp;tab='</span><span class="o">.</span> <span class="nx">esc_attr</span><span class="p">(</span> <span class="nv">$tab</span> <span class="p">)</span> <span class="o">.</span><span class="s1">'" class="nav-tab'</span><span class="o">.</span> <span class="nx">esc_attr</span><span class="p">(</span> <span class="nv">$class</span> <span class="p">)</span> <span class="o">.</span><span class="s1">'"&gt;'</span><span class="o">.</span> <span class="nx">esc_attr__</span><span class="p">(</span> <span class="nv">$name</span> <span class="p">)</span> <span class="o">.</span><span class="s1">'&lt;/a&gt;'</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="nv">$admin_tabs</span> <span class="o">.=</span> <span class="s1">'&lt;/h2&gt;&lt;br /&gt;'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nv">$admin_tabs</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="-settings" class="anchor" href="#-settings"><span class="octicon octicon-link"></span></a>:: Settings</h3>
+
+<p>The $tabs array includes the tab id (key) and the tabs display name (value) for each tab.</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$tabs</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'value'</span><span class="p">,</span>
+    <span class="s1">'lower-case-name'</span><span class="p">,</span> <span class="s1">'Proper Name'</span>
+<span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="-usage" class="anchor" href="#-usage"><span class="octicon octicon-link"></span></a>:: Usage</h3>
+
+<p>Echo the tabs() function within your Admin Area templates to display.</p>
+
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="nx">tabs</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="-css" class="anchor" href="#-css"><span class="octicon octicon-link"></span></a>:: CSS</h3>
+
+<p>No CSS adjustments needed. Wordpress controls the look of the tabs.</p>
+
+<h3>
+<a name="-questions" class="anchor" href="#-questions"><span class="octicon octicon-link"></span></a>:: Questions?</h3>
+
+<p>Contact me <a href="https://github.com/tribalNerd" class="user-mention">@tribalNerd</a> on GitHub.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Wp Admin Tabs maintained by <a href="https://github.com/tribalNerd">tribalNerd</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
