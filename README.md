@@ -10,13 +10,12 @@ Display Navigation Tabs within Wordpress Plugin & Theme Admin Areas
 Simple function adds Navigation Tabs within Custom Admin Areas for Wordpress Plugins and Themes.
 
 ```php
-<?php
 /**
  * Display Navigation Tabs within Wordpress Plugin & Theme Admin Areas
  * Modify: $tabs array()
  * Call: <?php echo tabs();?>
  * @author Chris Winters
- * @version 0.1.1
+ * @version 0.1.2
  */
 function tabs() {
     // Required
@@ -24,28 +23,37 @@ function tabs() {
 
     // Tabs Names: &tab=home
     $tabs = array( 
-        'home'      => 'Home', 
-        'settings'  => 'Settings', 
-        'contact'   => 'Contact' 
-    );    
+        'home'      => __( 'Home' ), 
+        'settings'  => __( 'Settings' ), 
+        'contact'   => __( 'Contact' ) 
+    );
 
-    // Required
+    // Required for foreach
     if( !empty( $tabs ) && !is_array( $tabs ) ) { return; }
 
-    // Get page & current tab
-    $page = sanitize_key( $_GET['page'] );
-    $current = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : key( $tabs );
+    // $_GET['page']
+    $get_page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
+
+    // $_GET['tab']
+    $get_tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
+
+    // Set current tab
+    $current = isset( $_GET['tab'] ) ? $get_tab : key( $tabs );
 
     // Tabs html
     $admin_tabs = '<div id="icon-edit-pages" class="icon32"><br /></div>';
     $admin_tabs .= '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ) {
+            // Current tab class
             $class = ( $tab == $current ) ? ' nav-tab-active' : '';
-            $admin_tabs .= '<a href="?page='. esc_attr( $page ) .'&amp;tab='. esc_attr( $tab ) .'" class="nav-tab'. esc_attr( $class ) .'">'. esc_attr__( $name ) .'</a>';
+
+            // Tab links
+            $admin_tabs .= '<a href="?page='. $get_page .'&tab='. $tab .'" class="nav-tab'. $class .'">'. $name .'</a>';
         }
     $admin_tabs .= '</h2><br />';
 
-    return $admin_tabs;
+    //echo $admin_tabs; /** use for do_action */
+    return $admin_tabs; /** use for echo function() */
 }
 ```
 
@@ -56,7 +64,7 @@ The $tabs array includes the tab id (key) and the tabs display name (value) for 
 ```php
 $tabs = array(
     'key' => 'value',
-    'lower-case-name', 'Proper Name'
+    'lower-case-name', __( 'Proper Name' )
 );
 ```
 
@@ -72,10 +80,15 @@ echo tabs();
 :: Change Log
 ----------
 
+0.1.2
+- Removed sanitize_key()
+- Removed esc_attr & esc_attr__
+- Added filter_input()
+- Added __() to array values.
+
 0.1.1
 - Set $current to use key()
 - Added $tab !empty & !is_array checks
-- Added esc_attr & esc_attr__
 
 
 0.1.0
