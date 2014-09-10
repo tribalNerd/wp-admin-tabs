@@ -12,24 +12,32 @@ function tabs() {
 
     // Tabs Names: &tab=home
     $tabs = array( 
-        'home'      => 'Home', 
-        'settings'  => 'Settings', 
-        'contact'   => 'Contact' 
-    );    
+        'home'      => __( 'Home' ), 
+        'settings'  => __( 'Settings' ), 
+        'contact'   => __( 'Contact' ) 
+    );
 
     // Required for foreach
     if( !empty( $tabs ) && !is_array( $tabs ) ) { return; }
 
-    // Get page & current tab
-    $page = sanitize_key( $_GET['page'] );
-    $current = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : key( $tabs );
+    // $_GET['page']
+    $get_page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
+
+    // $_GET['tab']
+    $get_tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
+
+    // Set current tab
+    $current = isset( $_GET['tab'] ) ? $get_tab : key( $tabs );
 
     // Tabs html
     $admin_tabs = '<div id="icon-edit-pages" class="icon32"><br /></div>';
     $admin_tabs .= '<h2 class="nav-tab-wrapper">';
         foreach( $tabs as $tab => $name ) {
+            // Current tab class
             $class = ( $tab == $current ) ? ' nav-tab-active' : '';
-            $admin_tabs .= '<a href="?page='. esc_attr( $page ) .'&amp;tab='. esc_attr( $tab ) .'" class="nav-tab'. esc_attr( $class ) .'">'. esc_attr__( $name ) .'</a>';
+
+            // Tab links
+            $admin_tabs .= '<a href="?page='. $get_page .'&tab='. $tab .'" class="nav-tab'. $class .'">'. $name .'</a>';
         }
     $admin_tabs .= '</h2><br />';
 
