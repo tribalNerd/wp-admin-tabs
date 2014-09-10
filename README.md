@@ -57,8 +57,10 @@ function tabs() {
 }
 ```
 
+
+
 :: Settings
-------------
+--------
 The $tabs array includes the tab id (key) and the tabs display name (value) for each tab.
 
 ```php
@@ -68,17 +70,41 @@ $tabs = array(
 );
 ```
 
-:: Usage
------
-Add the tabs() function to your Admin Area display scripts.
 
+
+:: Usage
+--------
+1) Add a unique word to the tabs function name, such as: sitename_tabs()
+
+2) Echo the tabs() or sitename_tabs() function within Wordpress admin area templates.
+
+3) Modify the $tabs = array() to match your needs.
+
+Echo the tabs:
 ```php
 echo tabs();
 ```
 
 
+
+:: Add Action
+--------
+To use with an add_action, comment out the return at the end of the function, and uncomment the echo.
+
+Set the action:
+```php
+add_action( 'do_my_action', 'tabs', 1000 );
+```
+
+Call the action:
+```php
+do_action( 'do_my_action' );
+```
+
+
+
 :: Change Log
-----------
+--------
 
 0.1.2
 - Removed sanitize_key()
