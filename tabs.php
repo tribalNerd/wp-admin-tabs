@@ -1,10 +1,10 @@
 <?php
 /**
  * Display Navigation Tabs within Wordpress Plugin & Theme Admin Areas
- * Modify: $default_tab and the $tabs array()
+ * Modify: $tabs array()
  * Call: <?php echo tabs();?>
  * @author Chris Winters
- * @version 0.1.1
+ * @version 0.1.2
  */
 function tabs() {
     // Required
